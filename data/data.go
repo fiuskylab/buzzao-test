@@ -8,13 +8,19 @@ type Data struct {
 
 // NewData construct a Data
 // with separated batches
-func NewData(threads int, nums []int) (data *Data) {
+func NewData(threads int, nums []int) *Data {
 	numPerBatch := len(nums) / threads
+
+	data := &Data{
+		Sum:     0,
+		Batches: [][]int{},
+	}
 
 	for i := 0; i < threads; i++ {
 		batch := nums[i*numPerBatch : (i+1)*numPerBatch]
 		data.Batches = append(data.Batches, batch)
 	}
 
-	return
+	return data
+}
 }
