@@ -30,6 +30,9 @@ func (d *Data) processBatch(pos int) {
 	}
 }
 
-func ProcessBatch(d *Data, pos int) {
-	d.processBatch(pos)
+// EachBatch a
+func EachBatch(d *Data) {
+	for i := 0; i < len(d.Batches); i++ {
+		d.processBatch(i)
+	}
 }
