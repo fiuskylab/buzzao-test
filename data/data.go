@@ -23,4 +23,13 @@ func NewData(threads int, nums []int) *Data {
 
 	return data
 }
+
+func (d *Data) processBatch(pos int) {
+	for _, n := range d.Batches[pos] {
+		d.Sum += n
+	}
+}
+
+func ProcessBatch(d *Data, pos int) {
+	d.processBatch(pos)
 }
