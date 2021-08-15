@@ -47,6 +47,7 @@ func (p *Pool) Run() {
 	close(p.collector)
 
 	p.wg.Wait()
+	p.collector = make(chan *Job, 1000)
 }
 
 func (p *Pool) AddJob(j *Job) {
