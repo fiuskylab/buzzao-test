@@ -1,16 +1,19 @@
 package workerpool
 
-import "sync"
+import (
+	"fmt"
+	"sync"
+)
 
 // Pool manages Jobs and Workers
 type Pool struct {
-	Jobs    []*Job
-	Workers []*Worker
+	Jobs        []*Job
+	Workers     []*Worker
+	Concurrency int
 
-	concurrency int
-	collector   chan *Job
-	runAsync    chan bool
-	wg          sync.WaitGroup
+	collector chan *Job
+	runAsync  chan bool
+	wg        sync.WaitGroup
 }
 
 // NewPool return a Pool
@@ -18,13 +21,21 @@ type Pool struct {
 func NewPool(jobs []*Job, c int) *Pool {
 	return &Pool{
 		Jobs:        jobs,
-		concurrency: c,
+		Concurrency: c,
 		collector:   make(chan *Job, 1000),
 	}
 }
 
+func (p *Pool) SetConcurrency(i int) error {
+	if i <= 0 {
+		return fmt.Errorf("Number of threads must be higher than 0, given: %d", i)
+	}
+	p.Concurrency = i
+	return nil
+}
+
 func (p *Pool) Run() {
-	for i := 0; i < p.concurrency; i++ {
+	for i := 0; i < p.Concurrency; i++ {
 		w := NewWorker(p.collector)
 		w.Run(&p.wg)
 	}
@@ -43,7 +54,7 @@ func (p *Pool) AddJob(j *Job) {
 }
 
 func (p *Pool) RunAsync() {
-	for i := 0; i < p.concurrency; i++ {
+	for i := 0; i < p.Concurrency; i++ {
 		w := NewWorker(p.collector)
 		p.Workers = append(p.Workers, w)
 
