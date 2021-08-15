@@ -1,0 +1,55 @@
+{
+	"info": {
+		"_postman_id": "acb9cb05-3109-4242-85bb-8c6da25b09f4",
+		"name": "Buzzao",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Config",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/config/0",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"config",
+						"0"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Process",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"nums\": [1,2,3,4,\"a\",6]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/process",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"process"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
