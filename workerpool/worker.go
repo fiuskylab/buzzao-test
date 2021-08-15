@@ -7,6 +7,7 @@ import "sync"
 type Worker struct {
 	jobChan chan *Job
 	stop    chan bool
+	Err     error
 }
 
 // NewWorker return a Worker
@@ -24,7 +25,10 @@ func (w *Worker) Run(wg *sync.WaitGroup) {
 	go func() {
 		defer wg.Done()
 		for j := range w.jobChan {
-			exec(j)
+			if err := exec(j); err != nil {
+				w.Err = err
+				w.Stop()
+			}
 		}
 	}()
 }

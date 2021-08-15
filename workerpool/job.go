@@ -6,18 +6,18 @@ import "github.com/fiuskylab/buzzao-test/data"
 type Job struct {
 	Err  error
 	Data *data.Data
-	f    func(d *data.Data)
+	f    func(d *data.Data) error
 }
 
 // NewJob return a Job pointer
 // with given params
-func NewJob(f func(d *data.Data), d *data.Data) *Job {
+func NewJob(f func(d *data.Data) error, d *data.Data) *Job {
 	return &Job{
 		f:    f,
 		Data: d,
 	}
 }
 
-func exec(j *Job) {
-	j.f(j.Data)
+func exec(j *Job) error {
+	return j.f(j.Data)
 }

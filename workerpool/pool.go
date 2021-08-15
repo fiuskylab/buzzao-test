@@ -34,10 +34,14 @@ func (p *Pool) SetConcurrency(i int) error {
 	return nil
 }
 
-func (p *Pool) Run() {
+func (p *Pool) Run() error {
 	for i := 0; i < p.Concurrency; i++ {
 		w := NewWorker(p.collector)
 		w.Run(&p.wg)
+
+		if w.Err != nil {
+			return w.Err
+		}
 	}
 
 	for _, j := range p.Jobs {
@@ -48,6 +52,7 @@ func (p *Pool) Run() {
 
 	p.wg.Wait()
 	p.collector = make(chan *Job, 1000)
+	return nil
 }
 
 func (p *Pool) AddJob(j *Job) {
