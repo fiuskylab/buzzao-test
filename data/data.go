@@ -17,8 +17,13 @@ func NewData(threads int, nums []int) *Data {
 	}
 
 	for i := 0; i < threads; i++ {
-		batch := nums[i*numPerBatch : (i+1)*numPerBatch]
+		if i == threads-1 {
+			data.Batches = append(data.Batches, nums)
+			break
+		}
+		batch := nums[:numPerBatch]
 		data.Batches = append(data.Batches, batch)
+		nums = nums[numPerBatch:]
 	}
 
 	return data
@@ -31,8 +36,10 @@ func (d *Data) processBatch(pos int) {
 }
 
 // EachBatch a
-func EachBatch(d *Data) {
+func EachBatch(d *Data) error {
 	for i := 0; i < len(d.Batches); i++ {
 		d.processBatch(i)
 	}
+
+	return nil
 }
