@@ -102,6 +102,6 @@ func (s *Server) configEndpoint(c *fiber.Ctx) error {
 	return c.
 		Status(http.StatusOK).
 		JSON(j{
-			"message": fmt.Sprintf("Number of threads set to %d", n),
+			"message": fmt.Sprintf("Number of threads set to %d", s.P.Concurrency),
 		})
 }
